@@ -1,9 +1,9 @@
 '''
-MSE 는 4.373166872107465e-09
-RMSE 는 6.612992418041521e-05
-R2는  0.9999999999006098
-verbose 는 1이 디폴트값
+MSE 는 3.725290298461914e-09
+RMSE 는 6.103515625e-05
+R2는  0.9999999999153343
 '''
+
 
 #1. 데이터
 import numpy as np
@@ -16,27 +16,31 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 
 #2. 모델구성
-from keras.models import Sequential 
-from keras.layers import Dense 
-model = Sequential()
-model.add(Dense(5, input_dim=3)) 
-model.add(Dense(8)) 
-model.add(Dense(16)) 
-model.add(Dense(520))
-model.add(Dense(848))
-model.add(Dense(5))
-model.add(Dense(1)) 
+from keras.models import Sequential, Model 
+from keras.layers import Dense, Input 
 
-'''
-# print(x_train)
-# # print(x_val)
-# print(x_test)
+# Sequential 모델
+# model = Sequential()
+# model.add(Dense(5, input_dim=3)) 
+# model.add(Dense(4)) 
+# model.add(Dense(1)) 
 
-'''
+# 함수형 모델
+input1 = Input(shape=(3, ))
+dense1 = Dense(5, activation='relu')(input1) # input 레이어를 알려줘야 함/ 노드를 5개로 가지고 input1을 인풋레이어로 받는 댄스층
+dense2 = Dense(8, activation='relu')(dense1)
+dense3 = Dense(32, activation='relu')(dense2)
+dense4 = Dense(8, activation='relu')(dense3)
+output1 = Dense(1)(dense4)
+
+model = Model(inputs=input1, outputs=output1)  # 함수형 모델임을 명시 레알 개신기하네...
+
+model.summary()
+
 
 #3. 알아듣게 설명한 후 훈련
 model.compile(loss='mse', optimizer='adam', metrics=['mse'])
-model.fit(x_train,y_train, epochs=500, batch_size=15,
+model.fit(x_train,y_train, epochs=600, batch_size=5,
          validation_split = 0.23, verbose=1) # verbose 학습중의 정보를 보여주는 버전 고르기 0(아예안나옴),1(다나옴),2(화살표는 안나옴),3(epo만 나옴) 딜레이 시간 아낄려고 -> 1/2 쓰면 될듯
         
 

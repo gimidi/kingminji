@@ -1,10 +1,7 @@
 '''
-MSE 는 4.373166872107465e-09
-RMSE 는 6.612992418041521e-05
-R2는  0.9999999999006098
-verbose 는 1이 디폴트값
+열우선 행무시 shape은 3열이고 행은 알바 아니다
+shape=(3,)
 '''
-
 #1. 데이터
 import numpy as np
 x = np.array([range(1,101), range(311,411), range(100)]).T # 여러칼럼 넣고싶으면 대괄호 []
@@ -19,27 +16,14 @@ x_train, x_test, y_train, y_test = train_test_split(
 from keras.models import Sequential 
 from keras.layers import Dense 
 model = Sequential()
-model.add(Dense(5, input_dim=3)) 
-model.add(Dense(8)) 
-model.add(Dense(16)) 
-model.add(Dense(520))
-model.add(Dense(848))
-model.add(Dense(5))
+model.add(Dense(5, input_shape=(3,)))
 model.add(Dense(1)) 
-
-'''
-# print(x_train)
-# # print(x_val)
-# print(x_test)
-
-'''
 
 #3. 알아듣게 설명한 후 훈련
 model.compile(loss='mse', optimizer='adam', metrics=['mse'])
 model.fit(x_train,y_train, epochs=500, batch_size=15,
          validation_split = 0.23, verbose=1) # verbose 학습중의 정보를 보여주는 버전 고르기 0(아예안나옴),1(다나옴),2(화살표는 안나옴),3(epo만 나옴) 딜레이 시간 아낄려고 -> 1/2 쓰면 될듯
         
-
 #4. 평가와 예측
 loss,mse = model.evaluate(x_test,y_test)
 print('loss(mse) 는',loss)
