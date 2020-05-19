@@ -33,7 +33,7 @@ dense3 = Dense(32, activation='relu')(dense2)
 dense4 = Dense(8, activation='relu')(dense3)
 output1 = Dense(1)(dense4)
 
-model = Model(inputs=input1, outputs=output1)  # 함수형 모델임을 명시 레알 개신기하네...
+model = Model(inputs=input1ㅁ, outputs=output1)  # 함수형 모델임을 명시 레알 개신기하네...
 
 model.summary()
 
@@ -63,3 +63,4 @@ print('RMSE 는', RMSE(y_test, y_predict) )
 from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_predict)
 print('R2는 ', r2)
+'''

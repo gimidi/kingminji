@@ -33,7 +33,6 @@ model.compile(loss='mse', optimizer='adam', metrics=['mse'])
 model.fit(x_train,y_train, epochs=600, batch_size=15,
          validation_split = 0.23)
         
-
 #4. 평가와 예측
 loss,mse = model.evaluate(x_test,y_test)
 print('loss(mse) 는',loss)
