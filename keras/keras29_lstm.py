@@ -1,0 +1,66 @@
+'''
+ loss: 6.3233e-06
+[[[5]
+  [6]
+  [7]]]
+[[8.022586]]
+'''
+from numpy import array
+from keras.models import Sequential #keras의 씨퀀셜 모델로 하겠다
+from keras.layers import Dense, LSTM # Dense와 LSTM 레이어를 쓰겠다
+
+#1. 데이터
+x = array([[1,2,3],[2,3,4],[3,4,5],[4,5,6]]) # (4,3)
+y = array([4,5,6,7]) # ( ,4)
+y1 = array([[4,5,6,7]]) # (1,4)
+y2 = array([[4],[5],[6],[7]])  # (4,1)
+print('x shape는',x.shape) # (4, 3)
+print('y shape는',y.shape) # (4,)
+print('y1 shape는',y1.shape) # (1,4)
+print('y2 shape는',y2.shape) # (1,4)
+
+# input_dim = 1 -> 1차원이다
+# x = x.reshape(4, 3, 1)
+# reshape할때 모든요소 곱해서 같으면 잘 한거다.
+x = x.reshape(x.shape[0], x.shape[1], 1)
+
+print('reshape한 x는',x)
+print('x shape는',x.shape) # (4, 3, 1) -> 연속된 데이터에 대해서는 하나씩 작업하겠다. 한개씩 빼고는 4행 3열짜리 배열이다. 라고 생각하면 된다.
+# 이거 해주는 이유는 lstm 이 3차원 데이터를 원하기 때문임
+# 2. 모델구성
+model = Sequential()
+model.add(LSTM(1, activation='relu', input_shape=(3,3))) 
+# input_shape에는 ㅇㅇ이 들어가는데 4행 3열을 1개씩, 행은 무시하면 / 컬럼의 갯수와, LSTM열에서 몇개씩 짤라서 작업할건지
+# 행무시 행무시!!! 어차피 split에서 짤리고 추가/삭제 될 수도 있기때문에 행갯수는 중요하지가 않아
+# 조정값에 포함되지 않는다구..!!! 구니까 일단 무시하고 (컬럼과, 몇개씩 짤라서 작업할건가) 이걸 봐 주세요!
+# 모델 자세가 api가 정해져있기 때문에 (규격이 이미 정해져있음), 데이터를 이 규격에 (와꾸에) 맞춰서 집어넣는것임
+# 따라서 이 lstm의 와꾸는 3x1로 잡겠다 이거심!
+
+# 이제 Dense모델 쌓쟈 ㅎㅎ
+model.add(Dense(32))
+model.add(Dense(640))
+model.add(Dense(126))
+model.add(Dense(20))
+model.add(Dense(64))
+
+model.add(Dense(1))
+
+model.summary()
+'''
+model.compile(optimizer='adam', loss='mse')
+model.fit(x,y,epochs=5000)
+
+x_input = array([5,6,7]) # 도출되는 y형태는 (3, ) 처럼 스칼라임 / 
+x_input = x_input.reshape(1,3,1) # 아 전부 3차원 텐서로 바꿔주나보네??/ 아 이거 넣는값이라서 x랑 똑같이 바꿔주는거자너 뭘 다른거라고 말하고 있니..??
+# input이니까 x데이터 모양으로 바꿔준다는거야 앙상블에서 계속 배웠자너
+# input데이터는 x데이터 대로만(3차원
+# ) 넣으면 되고 결과값은 어찌됏든 y데이터 형식(스칼라)으로 나온다!
+print(x_input)
+
+yhat = model.predict(x_input)
+print(yhat) # 8 나와야 허는디?
+# -> LSTM을 쓰기에 너무 적은 데이터다
+# LSTM은 만들어져있는거고 우리가 튜닝하는 부분은 batch_size (fit, dense에도 적용이 됐었어?????이게???), 노드, 레이어
+'''
+
+
