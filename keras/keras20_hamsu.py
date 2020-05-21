@@ -33,14 +33,14 @@ dense3 = Dense(32, activation='relu')(dense2)
 dense4 = Dense(8, activation='relu')(dense3)
 output1 = Dense(1)(dense4)
 
-model = Model(inputs=input1ㅁ, outputs=output1)  # 함수형 모델임을 명시 레알 개신기하네...
+model = Model(inputs=input1, outputs=output1)  # 함수형 모델임을 명시 레알 개신기하네...
 
 model.summary()
 
 
 #3. 알아듣게 설명한 후 훈련
 model.compile(loss='mse', optimizer='adam', metrics=['mse'])
-model.fit(x_train,y_train, epochs=600, batch_size=5,
+model.fit(x_train,y_train, epochs=3000, batch_size=5,
          validation_split = 0.23, verbose=1) # verbose 학습중의 정보를 보여주는 버전 고르기 0(아예안나옴),1(다나옴),2(화살표는 안나옴),3(epo만 나옴) 딜레이 시간 아낄려고 -> 1/2 쓰면 될듯
         
 
@@ -63,4 +63,3 @@ print('RMSE 는', RMSE(y_test, y_predict) )
 from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_predict)
 print('R2는 ', r2)
-'''

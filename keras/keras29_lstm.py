@@ -1,9 +1,12 @@
 '''
- loss: 6.3233e-06
+ loss: 4.1564e-08
 [[[5]
   [6]
   [7]]]
-[[8.022586]]
+[[7.9972777]]
+epochs=3000
+model.add(LSTM(150)
+LSTM param : 92400
 '''
 from numpy import array
 from keras.models import Sequential #keras의 씨퀀셜 모델로 하겠다
@@ -29,7 +32,7 @@ print('x shape는',x.shape) # (4, 3, 1) -> 연속된 데이터에 대해서는 �
 # 이거 해주는 이유는 lstm 이 3차원 데이터를 원하기 때문임
 # 2. 모델구성
 model = Sequential()
-model.add(LSTM(1, activation='relu', input_shape=(3,3))) 
+model.add(LSTM(150, activation='relu', input_shape=(3,1))) 
 # input_shape에는 ㅇㅇ이 들어가는데 4행 3열을 1개씩, 행은 무시하면 / 컬럼의 갯수와, LSTM열에서 몇개씩 짤라서 작업할건지
 # 행무시 행무시!!! 어차피 split에서 짤리고 추가/삭제 될 수도 있기때문에 행갯수는 중요하지가 않아
 # 조정값에 포함되지 않는다구..!!! 구니까 일단 무시하고 (컬럼과, 몇개씩 짤라서 작업할건가) 이걸 봐 주세요!
@@ -46,9 +49,9 @@ model.add(Dense(64))
 model.add(Dense(1))
 
 model.summary()
-'''
+
 model.compile(optimizer='adam', loss='mse')
-model.fit(x,y,epochs=5000)
+model.fit(x,y,epochs=3000)
 
 x_input = array([5,6,7]) # 도출되는 y형태는 (3, ) 처럼 스칼라임 / 
 x_input = x_input.reshape(1,3,1) # 아 전부 3차원 텐서로 바꿔주나보네??/ 아 이거 넣는값이라서 x랑 똑같이 바꿔주는거자너 뭘 다른거라고 말하고 있니..??
@@ -61,6 +64,6 @@ yhat = model.predict(x_input)
 print(yhat) # 8 나와야 허는디?
 # -> LSTM을 쓰기에 너무 적은 데이터다
 # LSTM은 만들어져있는거고 우리가 튜닝하는 부분은 batch_size (fit, dense에도 적용이 됐었어?????이게???), 노드, 레이어
-'''
+
 
 

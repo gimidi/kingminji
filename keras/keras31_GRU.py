@@ -1,13 +1,22 @@
 '''
- loss: 6.3233e-06
+epochs=3000 -> 2000 -> 3000
+ loss: 4.1564e-08 -> 2.6722e-08 -> 1.8130e-06
 [[[5]
   [6]
   [7]]]
-[[8.022586]]
+[[7.9972777]] -> [[8.029411]] -> [[7.9897428]]
+model.add(LSTM(150))
+LSTM param : 92400
+
+model.add(SimpleRNN(150))
+SimpleRNN param : 22800
+
+model.add(GRU(150))
+GRU param : 68400
 '''
 from numpy import array
 from keras.models import Sequential #keras의 씨퀀셜 모델로 하겠다
-from keras.layers import Dense, LSTM # Dense와 LSTM 레이어를 쓰겠다
+from keras.layers import Dense, GRU # Dense와 GRU 레이어를 쓰겠다
 
 #1. 데이터
 x = array([[1,2,3],[2,3,4],[3,4,5],[4,5,6]]) # (4,3)
@@ -18,13 +27,7 @@ print('x shape는',x.shape) # (4, 3)
 print('y shape는',y.shape) # (4,)
 print('y1 shape는',y1.shape) # (1,4)
 print('y2 shape는',y2.shape) # (1,4)
-'''
-                 행,         열,   몇개씩 자르는지
-x의 shape = (batch_size, timesteps, feature)
-input_shape = (timesteps, feature)
-input_length = timesteps
-input_dim = feature
-'''
+
 # input_dim = 1 -> 1차원이다
 # x = x.reshape(4, 3, 1)
 # reshape할때 모든요소 곱해서 같으면 잘 한거다.
@@ -35,15 +38,19 @@ print('x shape는',x.shape) # (4, 3, 1) -> 연속된 데이터에 대해서는 �
 # 이거 해주는 이유는 lstm 이 3차원 데이터를 원하기 때문임
 # 2. 모델구성
 model = Sequential()
-# model.add(LSTM(10, activation='relu', input_shape=(3,1))) 
-model.add(LSTM(5, input_length=3, input_dim=1))
-model.add(Dense(3))
+model.add(GRU(150, activation='relu', input_shape=(3,1))) 
+model.add(Dense(32))
+model.add(Dense(640))
+model.add(Dense(126))
+model.add(Dense(20))
+model.add(Dense(64))
+
 model.add(Dense(1))
 
 model.summary()
 
 model.compile(optimizer='adam', loss='mse')
-model.fit(x,y,epochs=5000)
+model.fit(x,y,epochs=3000)
 
 x_input = array([5,6,7]) # 도출되는 y형태는 (3, ) 처럼 스칼라임 / 
 x_input = x_input.reshape(1,3,1) # 아 전부 3차원 텐서로 바꿔주나보네??/ 아 이거 넣는값이라서 x랑 똑같이 바꿔주는거자너 뭘 다른거라고 말하고 있니..??
@@ -56,6 +63,6 @@ yhat = model.predict(x_input)
 print(yhat) # 8 나와야 허는디?
 # -> LSTM을 쓰기에 너무 적은 데이터다
 # LSTM은 만들어져있는거고 우리가 튜닝하는 부분은 batch_size (fit, dense에도 적용이 됐었어?????이게???), 노드, 레이어
-'''
+
 
 
