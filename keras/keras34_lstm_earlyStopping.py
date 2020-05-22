@@ -52,8 +52,10 @@ model.add(Dense(64))
 model.add(Dense(1))
 model.summary()
 
+from keras.callbacks import EarlyStopping
+early_stopping = EarlyStopping(monitor='loss', patience=100, mode='auto') # 난 머르겠다
 model.compile(optimizer='adam', loss='mse')
-model.fit(x,y,epochs=3000)
+model.fit(x,y,epochs=3000, callbacks=[early_stopping])
 
 y_predict = model.predict(x_predict)
 print(y_predict)
