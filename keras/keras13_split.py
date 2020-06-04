@@ -20,10 +20,28 @@ model.add(Dense(5))
 model.add(Dense(1)) 
 
 #3. 알아듣게 설명한 후 훈련
-model.compile(loss='mse', optimizer='adam', metrics=['mse'])
-model.fit(x_train,y_train, epochs=200, batch_size=5,
+model.compile(loss='mse', optimizer='adam', metrics=['acc'])
+hist = model.fit(x_train,y_train, epochs=200, batch_size=5,
          validation_split = 0.23)
-        
+# 시각화
+import matplotlib.pyplot as plt
+plt.figure(figsize=(12,10))
+plt.subplot(2,1,1) # 2행 1열 에 첫번째꺼 그리겠다
+plt.plot(hist.history['loss'], marker='.', c='red', label='loss')
+plt.plot(hist.history['val_loss'], marker='.', c='gray', label='val_loss')
+plt.grid()
+plt.xlabel('epoch', size=15)
+plt.ylabel('loss', size=15)
+plt.legend(loc='upper left')
+
+plt.subplot(2,1,2) # 2행 1열 에 두번째꺼 그리겠다
+plt.plot(hist.history['acc'], marker='.', c='red', label='acc')  
+plt.plot(hist.history['val_acc'], marker='.', c='gray', label='val_acc')
+plt.ylabel('acc', size=15)
+plt.xlabel('epoch', size=15)
+plt.legend(loc='upper left')
+# plt.legend(['acc', 'val acc']) # 걍 순서대로 들어가네
+plt.show()        
 
 #4. 평가와 예측
 loss,mse = model.evaluate(x_test,y_test)
@@ -44,3 +62,4 @@ print('RMSE 는', RMSE(y_test, y_predict) )
 from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_predict)
 print('R2는 ', r2)
+
