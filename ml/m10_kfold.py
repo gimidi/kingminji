@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split, KFold, cross_val_score
 from sklearn.metrics import accuracy_score
-from sklearn.utils.testing import all_estimators  # sklearn 0.20.1에서만 돌아감요
+from sklearn.utils.testing import all_estimators  # sklearn 0.20.1에서만 돌아감요 -> pipeline은 0.22에서만...ㅎ 걍 rf씁시다..ㅎ
 import warnings
 warnings.filterwarnings('ignore')
 
