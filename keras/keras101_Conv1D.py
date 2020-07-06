@@ -27,11 +27,11 @@ model.add(Dense(64))
 model.add(Dense(1))
 model.summary()
 
-'''
+
 model.compile(optimizer='adam', loss='mse')
 model.fit(x,y,epochs=3000)
 
 y_predict = model.predict(x_predict)
 print(y_predict)
-'''
+
 
